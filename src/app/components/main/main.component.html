@@ -1,0 +1,41 @@
+<div id="this">
+    <div class="ctn-canvas">
+        <canvas id="canvas" width="1500" height="800"></canvas>
+    </div>
+
+    <div class="totalCredit">
+        Credit : {{joueurService.credit.toFixed(2)}} $
+    </div>
+
+
+
+    <div class="page-ressources fadeInUp" *ngIf="menus.current != null && menus.current.label == 'ressources'">
+        <div class="titre">Ressources</div>
+        <div class="ressources">
+            <div class="ressource" *ngFor="let ressource of joueurService.ressources"
+                (click)="joueurService.selectRessource(ressource)"
+                [ngClass]="{'ressource-selected': ressource.selected}">
+                <div class="type">{{ressource.type}}</div>
+                <div class="qte" *ngIf="ressource.autoSell">Auto</div>
+                <div class="qte" *ngIf="!ressource.autoSell">{{ressource.qte}}</div>
+                <div class="price">{{ressource.price}}$</div>
+            </div>
+        </div>
+        <div class="zone-vente">
+
+            <button class="total" (click)="joueurService.vente.sellCurrent()"
+                *ngIf="!joueurService.currentRessource.autoSell"> Vendre <br><br>{{joueurService.vente.getTotal()}}
+                $</button>
+            <button class="auto" (click)="joueurService.vente.triggerAuto()"> Auto </button>
+            <div class="qte" *ngIf="!joueurService.currentRessource.autoSell">{{joueurService.vente.getQte()}}</div>
+            <div class="slidecontainer" *ngIf="!joueurService.currentRessource.autoSell">
+                <input #ramSelector type="range" min="1" max="100" value="100" class="slider"
+                    [(ngModel)]="joueurService.vente.percent">
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <div class="menu" [ngStyle]="{'background': menu.color}" *ngFor="let menu of menus.liste" (click)="menus.select(menu)">{{menu.label}}</div>
+    </div>
+</div>
